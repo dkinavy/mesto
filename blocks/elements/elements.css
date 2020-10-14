@@ -1,10 +1,11 @@
 .elements {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+
     margin: 50px auto 0;
     max-width: 882px;
-    grid-gap: 16px;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: repeat(2, auto);   
+
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 281px);
+    grid-gap: 20px 18px;
+    justify-content: center;
 }

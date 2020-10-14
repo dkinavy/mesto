@@ -4,7 +4,7 @@
     white-space: nowrap;
     overflow: hidden;    
     color: black;  
-    font-family: 'Inter';
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-style: normal;
     font-weight: 900;
     font-size: 24px;

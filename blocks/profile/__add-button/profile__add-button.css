@@ -6,12 +6,15 @@
     align-self: center;
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url(../../../images/AddButton.png);
+    background-image: url(../../../images/AddButton2.svg);
+    background-size:22px 22px;
+    background-position: center;
+    border: 2px solid#FFFFFF;
 
 }
 .profile__add-button:hover {
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.6;
     transition: opacity 0.3s linear;
   }
 @media screen and (max-width: 750px){
@@ -19,8 +22,7 @@
         margin-left: auto;
         margin-right: auto;
         width: 282px;
-        background-image: url(../../../images/AddButton2.png);
-        background-size:282px 50px;
+        background-size:16px 16px;
         margin-top: 36px;
 
     }

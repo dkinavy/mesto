@@ -3,7 +3,7 @@
     height: 18px;
     margin: 0;
     margin-left: 25px;
-    background-image: url(../../images/Vector.png);
+    background-image: url(../../../images/Vector.svg);
     background-repeat: no-repeat;
     background-position: center;
     border: none;
@@ -11,4 +11,10 @@
     outline: none;
     display: block;
     background-size: contain;
+    cursor: pointer;
 }
+.element__icon:hover {
+    
+    opacity: 0.6;
+    transition: opacity 0.3s linear;
+  }
