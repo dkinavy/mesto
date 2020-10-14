@@ -6,7 +6,8 @@
     top: -58px;
     right: -58px;
     cursor: pointer;
-    background:url(../../../images/CloseIcon.svg) no-repeat;
+    background:url(../../../images/CloseIcon.svg);
+    background-repeat: no-repeat;
     background-size: contain;
   }
   @media screen and (max-width: 750px){
