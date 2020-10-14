@@ -1,0 +1,14 @@
+.element__icon {
+    width: 20px;
+    height: 18px;
+    margin: 0;
+    margin-left: 25px;
+    background-image: url(../../images/Vector.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    display: block;
+    background-size: contain;
+}
