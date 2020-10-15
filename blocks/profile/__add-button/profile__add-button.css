@@ -10,6 +10,7 @@
     background-size:22px 22px;
     background-position: center;
     border: 2px solid#FFFFFF;
+    border-radius: 2px;
 
 }
 .profile__add-button:hover {

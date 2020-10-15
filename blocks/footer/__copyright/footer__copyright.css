@@ -12,7 +12,9 @@
     .footer__copyright {
         margin-top: 48px;
         margin-left: 19px;
-        margin-right: auto;
+        margin-right: 19px;
         margin-bottom: 0;
+        font-size: 14px;
+        line-height: 17px;        
     }
   }
