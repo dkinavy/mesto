@@ -18,3 +18,9 @@
     opacity: 0.6;
     transition: opacity 0.3s linear;
   }
+  .element__icon_active {
+    opacity: 1;
+    background: url(../../../images/Vectoractive.svg) center no-repeat;
+    color: black;
+    background-size: contain;
+  }
