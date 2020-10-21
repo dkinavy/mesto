@@ -5,29 +5,28 @@ const elements = container.querySelector('.elements');
 // Зададим переменные для попапа профиля
 const buttonOpenProfilePopup = document.querySelector(".profile__edit-button")
 const buttonCloseProfilePopup = document.querySelector(".popup__close-type-profile")
-const popup__profile = document.querySelector(".popup__profile")
+const popupProfile = document.querySelector(".popup__profile")
 // Зададим переменные для нового попапа добавления карточки
 const buttonOpenImagePopup = document.querySelector(".profile__add-button")
 const buttonCloseImagePopup = document.querySelector(".popup__close-type-image")
-const popup__image = document.querySelector(".popup__image")
-const popup__fullimage = document.querySelector(".popup__fullimage")
+const addCardPopup = document.querySelector(".popup__add-card")
+const popupFullimage = document.querySelector(".popup__fullimage")
 // // Зададим переменные для попапа полноразмерного изображения
-// const buttonOpenFullImagePopup = document.querySelector(".profile__add-button")
-// const buttonCloseFullImagePopup = document.querySelector(".popup__close-type-image")
-
+const imagePopup = document.querySelector(".image-popup");
+const imagePopupTitle = document.querySelector(".popup__image-title");
 
 
 // Находим форму в DOM
-let formElement = document.querySelector(".popup__form_type_profile");
-let formImageElement = document.querySelector(".popup__form_type_image");// Воспользуйтесь методом querySelector()
+const formProfileElement = document.querySelector(".popup__form_type_profile");
+const formImageElement = document.querySelector(".popup__form_type_image");// Воспользуйтесь методом querySelector()
 // Находим поля формы в DOM 
-let profileName = document.querySelector(".profile__info-name");
-let profileTitle = document.querySelector(".profile__info-title");
-let nameInput = document.querySelector(".popup__input_type_name");
-let jobInput = document.querySelector(".popup__input_type_job");
+const profileName = document.querySelector(".profile__info-name");
+const profileTitle = document.querySelector(".profile__info-title");
+const nameInput = document.querySelector(".popup__input_type_name");
+const jobInput = document.querySelector(".popup__input_type_job");
 // Поля карточки с картинкой
-let imagePlace = document.querySelector(".popup__input_type_place");
-let imageLink = document.querySelector(".popup__input_type_link");
+const imagePlace = document.querySelector(".popup__input_type_place");
+const imageLink = document.querySelector(".popup__input_type_link");
 
 // Шесть карточек из коробки
 const initialCards = [
@@ -58,15 +57,23 @@ const initialCards = [
 ]; 
 
 // Разово загрузим 6 карточек из InitialCards
-initialCards.forEach(add_song);
+initialCards.forEach(addCard);
 
 // Создадим функцию которая добавляет карточку по темплейту
-function add_song (item){
+function addCard (newCard){
+
+    elements.prepend(createCard (newCard));    
+}
+//логику создания карточки нужно выделить в отдельную функция createCard. 
+// Она будет создавать карточку, навешивать обработчики и возвращать ее через return. 
+// А в addCard уже эта карточка будет добавляться в DOM
+function createCard (item){
     const elementTemplate = document.querySelector('#element-template').content;
     const element = elementTemplate.cloneNode(true);
-//    console.log(item.name);
+    const elementImage = element.querySelector('.element__image');
     element.querySelector('.element__name').textContent = item.name;
-    element.querySelector('.element__image').src = item.link;
+    elementImage.src = item.link;
+    elementImage.alt = item.name;
     //Добавим листнер клика по сердечку который меняет цвет
     element.querySelector('.element__icon').addEventListener('click', function (evt) {
     evt.target.classList.toggle('element__icon_active'); 
@@ -75,40 +82,38 @@ function add_song (item){
     element.querySelector('.element__trash').addEventListener('click', function (evt) {
         evt.target.closest('.element').remove(); 
         });
-    //Добавим листнер клика по картинке, которая откроит наш попап
-    element.querySelector('.element__image').addEventListener('click', function (evt) {
+    //Добавим листнер клика по картинке, которая откроет наш попап
+    elementImage.addEventListener('click', function (evt) {
         popupFullImageOpen(evt)
         });
 
-    elements.prepend(element);
-    
+    return element;    
 }
 
 //Функция открывает попап профиля и загружает в него данные с страницы
-function popupProfileOpen(){
-    popup__profile.classList.toggle("popup_opened")
-
+function popupProfileOpen(){    
+    togglePopup (popupProfile);
     // Вставим значения с основной страницы в поля формы
     nameInput.value = profileName.textContent;
     jobInput.value = profileTitle.textContent;
 }
 // Функция открывает попап с большой картинкой, принимает на вход объект
 function popupFullImageOpen(image){
-    document.querySelector(".popup__fullimage").classList.toggle("popup_opened");
+    togglePopup(popupFullimage);
 //    Присваиваем попапу адрес исходного изображения
-    document.querySelector(".image-popup").src = image.toElement.src;
+    imagePopup.src = image.toElement.src;
 // И подпись из карточки    
-    document.querySelector(".popup__image-title").textContent = image.target.offsetParent.innerText;
+    imagePopupTitle.textContent = image.target.offsetParent.innerText;
     console.log(image);
 }
 
 //Функция открывает попап картинки с местом, но ничего не загружает со страницы
-function popupImageOpen(){
-    popup__image.classList.toggle("popup_opened")
+function popupPlaceOpen(){
+    togglePopup(addCardPopup);
 }
 
-//Функция закрывает любой попап
-function popupClose(popup){
+//Функция переключает любой попап
+function togglePopup(popup){
     popup.classList.toggle("popup_opened") 
 }
 
@@ -116,35 +121,32 @@ function popupClose(popup){
 // она никуда отправляться не будет
 function formSubmitHandler (evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-
     // Вставьте новые значения с помощью textContent
     profileName.textContent = nameInput.value;
     profileTitle.textContent = jobInput.value;
-    popupClose(popup__profile);
+    togglePopup(popupProfile);
 
 }
 
 function formSubmitImage (evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-    let newCard = {
+    const newCard = {
         name: imagePlace.value,
         link: imageLink.value
     };
     // Вставим новую карточку
-    add_song (newCard)
-    popupClose(popup__image);
+    addCard (newCard)
+    togglePopup(addCardPopup);
 
 }
 
-
-
-
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', formSubmitHandler);
+formProfileElement.addEventListener('submit', formSubmitHandler);
 formImageElement.addEventListener('submit', formSubmitImage); 
+//Обрабатываем клики
 buttonOpenProfilePopup.addEventListener("click", popupProfileOpen);
-buttonCloseProfilePopup.addEventListener("click", () => popupClose(popup__profile));
-buttonOpenImagePopup.addEventListener("click", popupImageOpen);
-buttonCloseImagePopup.addEventListener("click", () => popupClose(popup__image));
-document.querySelector(".popup__close-type-fullimage").addEventListener("click", () => popupClose(popup__fullimage));
+buttonCloseProfilePopup.addEventListener("click", () => togglePopup(popupProfile));
+buttonOpenImagePopup.addEventListener("click", popupPlaceOpen);
+buttonCloseImagePopup.addEventListener("click", () => togglePopup(addCardPopup));
+document.querySelector(".popup__close-type-fullimage").addEventListener("click", () => togglePopup(popupFullimage));
