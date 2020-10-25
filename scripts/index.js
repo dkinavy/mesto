@@ -14,7 +14,7 @@ const popupFullimage = document.querySelector(".popup__fullimage")
 // // Зададим переменные для попапа полноразмерного изображения
 const imagePopup = document.querySelector(".image-popup");
 const imagePopupTitle = document.querySelector(".popup__image-title");
-
+const popupOpened = document.querySelector(".popup_opened");
 
 // Находим форму в DOM
 const formProfileElement = document.querySelector(".popup__form_type_profile");
@@ -92,10 +92,14 @@ function createCard (item){
 
 //Функция открывает попап профиля и загружает в него данные с страницы
 function popupProfileOpen(){    
-    togglePopup (popupProfile);
+    
     // Вставим значения с основной страницы в поля формы
     nameInput.value = profileName.textContent;
     jobInput.value = profileTitle.textContent;
+    togglePopup (popupProfile);
+    addEscapePopup(popupProfile);
+    addMouseClickPopup(popupProfile);
+
 }
 // Функция открывает попап с большой картинкой, принимает на вход объект
 function popupFullImageOpen(image){
@@ -104,12 +108,15 @@ function popupFullImageOpen(image){
     imagePopup.src = image.toElement.src;
 // И подпись из карточки    
     imagePopupTitle.textContent = image.target.offsetParent.innerText;
-    console.log(image);
+    addEscapePopup(popupFullimage);
+    addMouseClickPopup(popupFullimage);
 }
 
 //Функция открывает попап картинки с местом, но ничего не загружает со страницы
 function popupPlaceOpen(){
     togglePopup(addCardPopup);
+    addEscapePopup(addCardPopup)
+    addMouseClickPopup(addCardPopup);
 }
 
 //Функция переключает любой попап
@@ -140,8 +147,30 @@ function formSubmitImage (evt) {
 
 }
 
+function addEscapePopup(popup){
+    document.addEventListener('keydown',function (evt) {
+      //  console.log(evt.key)
+        if (evt.key === 'Escape') {
+            closePopup(popup); 
+        }});
+}
+function addMouseClickPopup(popup){
+    //console.log(popup)
+    popup.addEventListener('click',function (evt) {
+        if (evt.target.classList.contains('popup')) {
+        closePopup(popup); }
+       
+})
+}
+function closePopup(popup){
+    popup.classList.remove("popup_opened");
+}
+
+
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
+
+
 formProfileElement.addEventListener('submit', formSubmitHandler);
 formImageElement.addEventListener('submit', formSubmitImage); 
 //Обрабатываем клики
