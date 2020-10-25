@@ -146,7 +146,7 @@ function formSubmitImage (evt) {
     togglePopup(addCardPopup);
 
 }
-
+// Добавим слушатель клавиатуры и ждем эскейп
 function addEscapePopup(popup){
     document.addEventListener('keydown',function (evt) {
       //  console.log(evt.key)
@@ -154,6 +154,7 @@ function addEscapePopup(popup){
             closePopup(popup); 
         }});
 }
+// Добавим слушатель кликов мыши
 function addMouseClickPopup(popup){
     //console.log(popup)
     popup.addEventListener('click',function (evt) {
@@ -162,6 +163,7 @@ function addMouseClickPopup(popup){
        
 })
 }
+// Закрываем попап. Для вызова при клике на оверлей и при нажатии escape
 function closePopup(popup){
     popup.classList.remove("popup_opened");
 }

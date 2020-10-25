@@ -6,7 +6,7 @@ enableValidation({
     submitButtonSelector: '.popup__save',
     inactiveButtonClass: 'popup__save_disabled',
     inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
+    errorClass: 'popup__error_visible' //не понятно для чего этот параметр в задании
   }); 
 // Для задания используем стандартные браузерные тексты
   //   const errorMessages = {
@@ -34,9 +34,9 @@ enableValidation({
     });
   }
 
+  //установим слушатели, для проброски передадим в функцию все нужные параметры
   function setEventListeners(formElement, inputSelector, buttonElement,inactiveButtonClass,inputErrorClass) {
     const inputs = Array.from(formElement.querySelectorAll(inputSelector));
-
     inputs.forEach(input => {
        input.addEventListener('input', (evt) => {
 
@@ -49,6 +49,7 @@ enableValidation({
     });
     }
 
+    // Меняем состояние кнопки
     function toggleButtonState(buttonElem, isActive,inactiveButtonClass) {
         if (isActive) {
             buttonElem.disabled = false;
@@ -59,6 +60,7 @@ enableValidation({
         }
     }
 
+    // Проверяем инпут на валидность, не включаем кастомные тексты ошибок
     function checkInputValidity(formElement, input,inputErrorClass) {
        // input.setCustomValidity('');
     
@@ -69,15 +71,14 @@ enableValidation({
             console.log(input)
         }
     }
-
+// Показать все что скрыто, скандалы ошибки неправильные ссылки
     function showError(formElement, input,inputErrorClass) {
-  
         const errorElement = formElement.querySelector(`#${input.id}-error`);
         console.log(errorElement)
         errorElement.textContent = input.validationMessage;
         input.classList.add(inputErrorClass);
     }
-    
+// Убираем текст ошибки если все хорошо   
     function hideError(formElement, input,inputErrorClass) {
         const errorElement = formElement.querySelector(`#${input.id}-error`);
         errorElement.textContent = '';
