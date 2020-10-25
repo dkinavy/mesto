@@ -15,6 +15,7 @@ const popupFullimage = document.querySelector(".popup__fullimage")
 const imagePopup = document.querySelector(".image-popup");
 const imagePopupTitle = document.querySelector(".popup__image-title");
 const popupOpened = document.querySelector(".popup_opened");
+const popupClosedFullImage = document.querySelector(".popup__close-type-fullimage");
 
 // Находим форму в DOM
 const formProfileElement = document.querySelector(".popup__form_type_profile");
@@ -28,40 +29,11 @@ const jobInput = document.querySelector(".popup__input_type_job");
 const imagePlace = document.querySelector(".popup__input_type_place");
 const imageLink = document.querySelector(".popup__input_type_link");
 
-// Шесть карточек из коробки
-const initialCards = [
-    {
-        name: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-        name: 'Челябинская область',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-        name: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-        name: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-]; 
-
 // Разово загрузим 6 карточек из InitialCards
 initialCards.forEach(addCard);
 
 // Создадим функцию которая добавляет карточку по темплейту
 function addCard (newCard){
-
     elements.prepend(createCard (newCard));    
 }
 //логику создания карточки нужно выделить в отдельную функция createCard. 
@@ -76,47 +48,42 @@ function createCard (item){
     elementImage.alt = item.name;
     //Добавим листнер клика по сердечку который меняет цвет
     element.querySelector('.element__icon').addEventListener('click', function (evt) {
-    evt.target.classList.toggle('element__icon_active'); 
-    });
+        toggleIcon(evt); 
+        });
     //Добавим листнер клика по корзине которая удалит картинку
     element.querySelector('.element__trash').addEventListener('click', function (evt) {
         evt.target.closest('.element').remove(); 
         });
     //Добавим листнер клика по картинке, которая откроет наш попап
     elementImage.addEventListener('click', function (evt) {
-        popupFullImageOpen(evt)
+        openPopupFullImage(evt)
         });
 
     return element;    
 }
 
 //Функция открывает попап профиля и загружает в него данные с страницы
-function popupProfileOpen(){    
+function openPopupProfile(){    
     
     // Вставим значения с основной страницы в поля формы
     nameInput.value = profileName.textContent;
     jobInput.value = profileTitle.textContent;
-    togglePopup (popupProfile);
-    addEscapePopup(popupProfile);
-    addMouseClickPopup(popupProfile);
-
+    //Вызовем универсальную функцию открытия попапа
+    openPopup (popupProfile);
 }
 // Функция открывает попап с большой картинкой, принимает на вход объект
-function popupFullImageOpen(image){
-    togglePopup(popupFullimage);
-//    Присваиваем попапу адрес исходного изображения
+function openPopupFullImage(image){
+    // Присваиваем попапу адрес исходного изображения
     imagePopup.src = image.toElement.src;
-// И подпись из карточки    
+    // И подпись из карточки    
     imagePopupTitle.textContent = image.target.offsetParent.innerText;
-    addEscapePopup(popupFullimage);
-    addMouseClickPopup(popupFullimage);
+    //Вызываем универсальную функцию открытия попапа    
+    openPopup(popupFullimage);
 }
 
 //Функция открывает попап картинки с местом, но ничего не загружает со страницы
-function popupPlaceOpen(){
-    togglePopup(addCardPopup);
-    addEscapePopup(addCardPopup)
-    addMouseClickPopup(addCardPopup);
+function openPopupPlace(){
+    openPopup(addCardPopup);
 }
 
 //Функция переключает любой попап
@@ -124,9 +91,13 @@ function togglePopup(popup){
     popup.classList.toggle("popup_opened") 
 }
 
+//Функция переключает вид лайка сердечка
+function toggleIcon(evt) {
+    evt.target.classList.toggle('element__icon_active'); 
+    }
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
-function formSubmitHandler (evt) {
+function submitFormHandler (evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
     // Вставьте новые значения с помощью textContent
     profileName.textContent = nameInput.value;
@@ -135,7 +106,7 @@ function formSubmitHandler (evt) {
 
 }
 
-function formSubmitImage (evt) {
+function submitFormImage (evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
     const newCard = {
         name: imagePlace.value,
@@ -146,38 +117,54 @@ function formSubmitImage (evt) {
     togglePopup(addCardPopup);
 
 }
-// Добавим слушатель клавиатуры и ждем эскейп
-function addEscapePopup(popup){
-    document.addEventListener('keydown',function (evt) {
-      //  console.log(evt.key)
-        if (evt.key === 'Escape') {
-            closePopup(popup); 
-        }});
-}
-// Добавим слушатель кликов мыши
-function addMouseClickPopup(popup){
-    //console.log(popup)
-    popup.addEventListener('click',function (evt) {
-        if (evt.target.classList.contains('popup')) {
-        closePopup(popup); }
-       
-})
-}
-// Закрываем попап. Для вызова при клике на оверлей и при нажатии escape
-function closePopup(popup){
-    popup.classList.remove("popup_opened");
+// Функция которая закрывает любой попап при нажатии ескейп
+function closePopupByEscapePress(evt,popup){
+    if (evt.key === 'Escape') {
+        closePopup(popup); 
+    }
 }
 
+// Функции добавляют и убирают у любого попата эффект закрытия при клике на оверлей
+function addMouseClickPopup(popup){
+    popup.addEventListener('click',function (evt) {
+        if (evt.target.classList.contains('popup')) {
+        closePopup(popup); }       
+})}
+
+function removeMouseClickPopup(popup){
+    popup.removeEventListener('click',function (evt) {
+        if (evt.target.classList.contains('popup')) {
+        closePopup(popup); }       
+})}
+
+
+// Закрываем попап. Удаляем все слушатели
+function closePopup(popup){
+    popup.classList.remove("popup_opened");
+    document.removeEventListener('keydown',function (evt) {
+        closePopupByEscapePress(evt,popup)
+        });
+    removeMouseClickPopup(popup);     
+}
+
+//Открывем попап, устанавливаем нужные слушатели
+function openPopup(popup){
+    popup.classList.add("popup_opened");
+    document.addEventListener('keydown',function (evt) {
+        closePopupByEscapePress(evt,popup)
+        });
+    addMouseClickPopup(popup)
+}
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 
 
-formProfileElement.addEventListener('submit', formSubmitHandler);
-formImageElement.addEventListener('submit', formSubmitImage); 
+formProfileElement.addEventListener('submit', submitFormHandler);
+formImageElement.addEventListener('submit', submitFormImage); 
 //Обрабатываем клики
-buttonOpenProfilePopup.addEventListener("click", popupProfileOpen);
+buttonOpenProfilePopup.addEventListener("click", openPopupProfile);
 buttonCloseProfilePopup.addEventListener("click", () => togglePopup(popupProfile));
-buttonOpenImagePopup.addEventListener("click", popupPlaceOpen);
+buttonOpenImagePopup.addEventListener("click", openPopupPlace);
 buttonCloseImagePopup.addEventListener("click", () => togglePopup(addCardPopup));
-document.querySelector(".popup__close-type-fullimage").addEventListener("click", () => togglePopup(popupFullimage));
+popupClosedFullImage.addEventListener("click", () => togglePopup(popupFullimage));

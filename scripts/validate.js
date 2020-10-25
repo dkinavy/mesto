@@ -68,13 +68,13 @@ enableValidation({
             hideError(formElement, input,inputErrorClass);
         } else {
             showError(formElement, input,inputErrorClass);
-            console.log(input)
+           // console.log(input)
         }
     }
 // Показать все что скрыто, скандалы ошибки неправильные ссылки
     function showError(formElement, input,inputErrorClass) {
         const errorElement = formElement.querySelector(`#${input.id}-error`);
-        console.log(errorElement)
+       // console.log(errorElement)
         errorElement.textContent = input.validationMessage;
         input.classList.add(inputErrorClass);
     }
