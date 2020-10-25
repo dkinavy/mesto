@@ -158,8 +158,6 @@ function openPopup(popup){
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-
-
 formProfileElement.addEventListener('submit', submitFormHandler);
 formImageElement.addEventListener('submit', submitFormImage); 
 //Обрабатываем клики
