@@ -14,7 +14,7 @@ const popupFullimage = document.querySelector(".popup__fullimage")
 // // Зададим переменные для попапа полноразмерного изображения
 const imagePopup = document.querySelector(".image-popup");
 const imagePopupTitle = document.querySelector(".popup__image-title");
-const popupOpened = document.querySelector(".popup_opened");
+let popupOpened = document.querySelector(".popup_opened");
 const popupClosedFullImage = document.querySelector(".popup__close-type-fullimage");
 
 // Находим форму в DOM
@@ -86,11 +86,6 @@ function openPopupPlace(){
     openPopup(addCardPopup);
 }
 
-//Функция переключает любой попап
-function togglePopup(popup){
-    popup.classList.toggle("popup_opened") 
-}
-
 //Функция переключает вид лайка сердечка
 function toggleIcon(evt) {
     evt.target.classList.toggle('element__icon_active'); 
@@ -102,7 +97,7 @@ function submitFormHandler (evt) {
     // Вставьте новые значения с помощью textContent
     profileName.textContent = nameInput.value;
     profileTitle.textContent = jobInput.value;
-    togglePopup(popupProfile);
+    closePopup(popupProfile);
 
 }
 
@@ -114,46 +109,40 @@ function submitFormImage (evt) {
     };
     // Вставим новую карточку
     addCard (newCard)
-    togglePopup(addCardPopup);
+    closePopup(addCardPopup);
 
 }
 // Функция которая закрывает любой попап при нажатии ескейп
-function closePopupByEscapePress(evt,popup){
+function closePopupByEscapePress(evt){
+  //  console.log(evt);
+    const openedPopup = document.querySelector(".popup_opened")
     if (evt.key === 'Escape') {
-        closePopup(popup); 
+    closePopup(openedPopup); 
     }
 }
 
-// Функции добавляют и убирают у любого попата эффект закрытия при клике на оверлей
-function addMouseClickPopup(popup){
-    popup.addEventListener('click',function (evt) {
-        if (evt.target.classList.contains('popup')) {
-        closePopup(popup); }       
-})}
-
-function removeMouseClickPopup(popup){
-    popup.removeEventListener('click',function (evt) {
-        if (evt.target.classList.contains('popup')) {
-        closePopup(popup); }       
-})}
-
+function closePopupByMouseClick(evt){
+    const openedPopup = document.querySelector(".popup_opened")
+    if (evt.target.classList.contains('popup')) {
+    closePopup(openedPopup); }
+}
 
 // Закрываем попап. Удаляем все слушатели
 function closePopup(popup){
     popup.classList.remove("popup_opened");
-    document.removeEventListener('keydown',function (evt) {
-        closePopupByEscapePress(evt,popup)
-        });
-    removeMouseClickPopup(popup);     
+    // удалим листнеры 
+    document.removeEventListener('keydown',closePopupByEscapePress);
+    popup.removeEventListener('click',closePopupByMouseClick);
+//    removeMouseClickPopup(popup);     
 }
 
 //Открывем попап, устанавливаем нужные слушатели
 function openPopup(popup){
     popup.classList.add("popup_opened");
-    document.addEventListener('keydown',function (evt) {
-        closePopupByEscapePress(evt,popup)
-        });
-    addMouseClickPopup(popup)
+    // передадим ссылку на функции в листнер
+    document.addEventListener('keydown',closePopupByEscapePress);
+    popup.addEventListener('click',closePopupByMouseClick);
+//    addMouseClickPopup(popup)
 }
 
 // Прикрепляем обработчик к форме:
@@ -162,7 +151,7 @@ formProfileElement.addEventListener('submit', submitFormHandler);
 formImageElement.addEventListener('submit', submitFormImage); 
 //Обрабатываем клики
 buttonOpenProfilePopup.addEventListener("click", openPopupProfile);
-buttonCloseProfilePopup.addEventListener("click", () => togglePopup(popupProfile));
+buttonCloseProfilePopup.addEventListener("click", () => closePopup(popupProfile));
 buttonOpenImagePopup.addEventListener("click", openPopupPlace);
-buttonCloseImagePopup.addEventListener("click", () => togglePopup(addCardPopup));
-popupClosedFullImage.addEventListener("click", () => togglePopup(popupFullimage));
+buttonCloseImagePopup.addEventListener("click", () => closePopup(addCardPopup));
+popupClosedFullImage.addEventListener("click", () => closePopup(popupFullimage));
