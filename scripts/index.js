@@ -59,6 +59,44 @@ const initialCards = [
 // Разово загрузим 6 карточек из InitialCards
 initialCards.forEach(addCard);
 
+// Создадим класс карточки
+class Card {
+    constructor(data, cardSelector) {
+      this._text = data.name;
+      this._image = data.link;
+      this._cardSelector = cardSelector;
+    }
+
+    _getTemplate() {
+        const cardElement = document
+          .querySelector(this._cardSelector)
+          .content
+          .querySelector('.element')
+          .cloneNode(true);
+    
+        return cardElement;
+      }
+      
+    generateCard() {
+        this._element = this._getTemplate();
+       // this._setEventListeners();
+    
+        this._element.querySelector('.element__image').src = this._image;
+        this._element.querySelector('.element__name').textContent = this._text;
+    
+        return this._element;
+      }
+
+    }
+    initialCards.forEach((item) => {
+        const card = new Card(item, '#element-template');
+        const cardElement = card.generateCard();
+      
+        elements.prepend(cardElement);
+      });
+
+//----------------------------------------------------------------
+
 // Создадим функцию которая добавляет карточку по темплейту
 function addCard (newCard){
 
