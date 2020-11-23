@@ -30,7 +30,7 @@ const imagePlace = document.querySelector(".popup__input_type_place");
 const imageLink = document.querySelector(".popup__input_type_link");
 
 // Разово загрузим 6 карточек из InitialCards
-initialCards.forEach(addCard);
+//initialCards.forEach(addCard);
 
 // Создадим класс карточки
 class Card {
@@ -49,10 +49,31 @@ class Card {
     
         return cardElement;
       }
+
+
+    _setEventListeners() {
+        this._element.querySelector('.element__image').addEventListener('click', function (evt) {
+            openPopupFullImage(evt)
+            });
       
+
+    
+        //Добавим листнер клика по корзине которая удалит картинку
+        this._element.querySelector('.element__trash').addEventListener('click', function (evt) {
+            evt.target.closest('.element').remove(); 
+            });
+            //Добавим листнер клика по сердечку который меняет цвет
+        this._element.querySelector('.element__icon').addEventListener('click', function (evt) {
+            toggleIcon(evt); 
+            });
+        document.addEventListener('keydown',closePopupByEscapePress);
+        this._element.addEventListener('click',closePopupByMouseClick);
+    
+    } 
+
     generateCard() {
         this._element = this._getTemplate();
-       // this._setEventListeners();
+        this._setEventListeners();
     
         this._element.querySelector('.element__image').src = this._image;
         this._element.querySelector('.element__name').textContent = this._text;
@@ -70,35 +91,40 @@ class Card {
 
 //----------------------------------------------------------------
 
+
+
+
+
+//---------------------------------------------------------------
 // Создадим функцию которая добавляет карточку по темплейту
-function addCard (newCard){
-    elements.prepend(createCard (newCard));    
-}
+// function addCard (newCard){
+//     elements.prepend(createCard (newCard));    
+// }
 //логику создания карточки нужно выделить в отдельную функция createCard. 
 // Она будет создавать карточку, навешивать обработчики и возвращать ее через return. 
 // А в addCard уже эта карточка будет добавляться в DOM
-function createCard (item){
-    const elementTemplate = document.querySelector('#element-template').content;
-    const element = elementTemplate.cloneNode(true);
-    const elementImage = element.querySelector('.element__image');
-    element.querySelector('.element__name').textContent = item.name;
-    elementImage.src = item.link;
-    elementImage.alt = item.name;
-    //Добавим листнер клика по сердечку который меняет цвет
-    element.querySelector('.element__icon').addEventListener('click', function (evt) {
-        toggleIcon(evt); 
-        });
-    //Добавим листнер клика по корзине которая удалит картинку
-    element.querySelector('.element__trash').addEventListener('click', function (evt) {
-        evt.target.closest('.element').remove(); 
-        });
-    //Добавим листнер клика по картинке, которая откроет наш попап
-    elementImage.addEventListener('click', function (evt) {
-        openPopupFullImage(evt)
-        });
+// function createCard (item){
+//     const elementTemplate = document.querySelector('#element-template').content;
+//     const element = elementTemplate.cloneNode(true);
+//     const elementImage = element.querySelector('.element__image');
+//     element.querySelector('.element__name').textContent = item.name;
+//     elementImage.src = item.link;
+//     elementImage.alt = item.name;
+//     //Добавим листнер клика по сердечку который меняет цвет
+//     element.querySelector('.element__icon').addEventListener('click', function (evt) {
+//         toggleIcon(evt); 
+//         });
+//     //Добавим листнер клика по корзине которая удалит картинку
+//     element.querySelector('.element__trash').addEventListener('click', function (evt) {
+//         evt.target.closest('.element').remove(); 
+//         });
+//     //Добавим листнер клика по картинке, которая откроет наш попап
+//     elementImage.addEventListener('click', function (evt) {
+//         openPopupFullImage(evt)
+//         });
 
-    return element;    
-}
+//     return element;    
+// }
 
 //Функция открывает попап профиля и загружает в него данные с страницы
 function openPopupProfile(){    
@@ -112,6 +138,7 @@ function openPopupProfile(){
 // Функция открывает попап с большой картинкой, принимает на вход объект
 function openPopupFullImage(image){
     // Присваиваем попапу адрес исходного изображения
+    console.log(image);
     imagePopup.src = image.toElement.src;
     // И подпись из карточки    
     imagePopupTitle.textContent = image.target.offsetParent.innerText;
@@ -146,7 +173,10 @@ function submitFormImage (evt) {
         link: imageLink.value
     };
     // Вставим новую карточку
-    addCard (newCard)
+    const card = new Card(newCard, '#element-template');
+    const cardElement = card.generateCard();
+  
+    elements.prepend(cardElement);
     closePopup(addCardPopup);
 
 }
