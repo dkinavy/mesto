@@ -81,11 +81,3 @@ export class FormValidator{
     }
 }
 
-//     // создадим валидаторы для всех форм
-//     const forms = Array.from(document.querySelectorAll(configs.formSelector));
-//    // console.log(forms)
-//     forms.forEach(form =>{
-//         const validator = new FormValidator(configs, form);
-//         validator.enableValidation ();
-//       //  console.log(form)
-//     })
