@@ -5,7 +5,7 @@ export const popupFullimage = document.querySelector(".popup__fullimage")
 export const imagePopup = document.querySelector(".image-popup");
 export const imagePopupTitle = document.querySelector(".popup__image-title");
 export function closePopupByEscapePress(evt){
-    //  console.log(evt);
+
       const openedPopup = document.querySelector(".popup_opened")
       if (evt.key === 'Escape') {
       closePopup(openedPopup); 
@@ -21,7 +21,6 @@ export function closePopupByEscapePress(evt){
 // // Функция открывает попап с большой картинкой, принимает на вход объект
 // export function openPopupFullImage(image){
 //     // Присваиваем попапу адрес исходного изображения
-//     console.log(image);
 //     imagePopup.src = image.toElement.src;
 //     // И подпись из карточки    
 //     imagePopupTitle.textContent = image.target.offsetParent.innerText;

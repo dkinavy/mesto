@@ -79,7 +79,6 @@ export class Card {
 // Функция открывает попап с большой картинкой, принимает на вход объект
     _openPopupFullImage(){
     // Присваиваем попапу адрес исходного изображения
-    //console.log (this._image)
      
     imagePopup.src = this._image;
     // И подпись из карточки    

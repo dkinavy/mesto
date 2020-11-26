@@ -34,11 +34,11 @@ const imageLink = document.querySelector(".popup__input_type_link");
 
     // создадим валидаторы для всех форм
     const forms = Array.from(document.querySelectorAll(configs.formSelector));
-   // console.log(forms)
+
     forms.forEach(form =>{
         const validator = new FormValidator(configs, form);
         validator.enableValidation ();
-      //  console.log(form)
+ 
     })
 
 //Функция открывает попап профиля и загружает в него данные с страницы
