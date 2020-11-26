@@ -75,7 +75,8 @@ function submitFormImage (evt) {
     // Вставим новую карточку
     const card = new Card(newCard, '#element-template');
     const cardElement = card.generateCard();
-  
+    formImageElement.reset();
+
     addCard(cardElement);
     closePopup(addCardPopup);
 }
