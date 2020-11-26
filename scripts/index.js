@@ -16,8 +16,9 @@ const buttonOpenImagePopup = document.querySelector(".profile__add-button")
 const buttonCloseImagePopup = document.querySelector(".popup__close-type-image")
 const addCardPopup = document.querySelector(".popup__add-card")
 // // Зададим переменные для попапа полноразмерного изображения
-let popupOpened = document.querySelector(".popup_opened");
+
 const popupClosedFullImage = document.querySelector(".popup__close-type-fullimage");
+
 
 // Находим форму в DOM
 const formProfileElement = document.querySelector(".popup__form_type_profile");
@@ -50,10 +51,10 @@ function openPopupProfile(){
     openPopup (popupProfile);
 }
 
-//Функция открывает попап картинки с местом, но ничего не загружает со страницы
-function openPopupPlace(){
-    openPopup(addCardPopup);
-}
+// //Функция открывает попап картинки с местом, но ничего не загружает со страницы
+// function openPopupPlace(){
+//     openPopup(addCardPopup);
+// }
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -75,8 +76,12 @@ function submitFormImage (evt) {
     const card = new Card(newCard, '#element-template');
     const cardElement = card.generateCard();
   
-    elements.prepend(cardElement);
+    addCard(cardElement);
     closePopup(addCardPopup);
+}
+
+function addCard(cardElement){
+    elements.prepend(cardElement);
 }
 
 // Создадим класс карточки
@@ -85,7 +90,7 @@ initialCards.forEach((item) => {
     const card = new Card(item, '#element-template');
     const cardElement = card.generateCard();
     
-    elements.prepend(cardElement);
+    addCard(cardElement);
     });
 
 // Прикрепляем обработчик к форме:
@@ -95,6 +100,6 @@ formImageElement.addEventListener('submit', submitFormImage);
 //Обрабатываем клики
 buttonOpenProfilePopup.addEventListener("click", openPopupProfile);
 buttonCloseProfilePopup.addEventListener("click", () => closePopup(popupProfile));
-buttonOpenImagePopup.addEventListener("click", openPopupPlace);
+buttonOpenImagePopup.addEventListener("click", ()=>openPopup(addCardPopup));
 buttonCloseImagePopup.addEventListener("click", () => closePopup(addCardPopup));
 popupClosedFullImage.addEventListener("click", () => closePopup(popupFullimage));

@@ -1,4 +1,4 @@
-import {toggleIcon, closePopupByEscapePress,closePopupByMouseClick,openPopupFullImage} from "../scripts/utils.js";
+import { imagePopup,imagePopupTitle,  closePopupByEscapePress,closePopupByMouseClick,openPopup,popupFullimage} from "../scripts/utils.js";
 
 // Шесть карточек из коробки
 export const initialCards = [
@@ -47,18 +47,16 @@ export class Card {
 
 
     _setEventListeners() {
-        this._element.querySelector('.element__image').addEventListener('click', function (evt) {
-            openPopupFullImage(evt)
-            });
+        
+        this._element.querySelector('.element__image').addEventListener('click',this._openPopupFullImage.bind(this));
         
         //Добавим листнер клика по корзине которая удалит картинку
         this._element.querySelector('.element__trash').addEventListener('click', function (evt) {
             evt.target.closest('.element').remove(); 
             });
             //Добавим листнер клика по сердечку который меняет цвет
-        this._element.querySelector('.element__icon').addEventListener('click', function (evt) {
-            toggleIcon(evt); 
-            });
+        this._element.querySelector('.element__icon').addEventListener('click', 
+            this._toggleIcon);
         document.addEventListener('keydown',closePopupByEscapePress);
         this._element.addEventListener('click',closePopupByMouseClick);
     
@@ -73,5 +71,22 @@ export class Card {
     
         return this._element;
       }
+//**Функции лайка, удаления картинки и превью необходимо реализовать в данном классе
+//Функция переключает вид лайка сердечка
+    _toggleIcon(el) {
+        el.target.classList.toggle('element__icon_active'); 
+    }
+// Функция открывает попап с большой картинкой, принимает на вход объект
+    _openPopupFullImage(){
+    // Присваиваем попапу адрес исходного изображения
+    console.log (this._image)
+     
+    imagePopup.src = this._image;
+    // И подпись из карточки    
+    imagePopupTitle.textContent = this._text;
+    //Вызываем универсальную функцию открытия попапа    
+    openPopup(popupFullimage);
+}
+// Удаление попапа также реализовано в этом классе
 
     }

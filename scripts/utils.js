@@ -1,8 +1,9 @@
 // Функция которая закрывает любой попап при нажатии ескейп
-const imagePopup = document.querySelector(".image-popup");
-const imagePopupTitle = document.querySelector(".popup__image-title");
+// const imagePopup = document.querySelector(".image-popup");
+// const imagePopupTitle = document.querySelector(".popup__image-title");
 export const popupFullimage = document.querySelector(".popup__fullimage")
-
+export const imagePopup = document.querySelector(".image-popup");
+export const imagePopupTitle = document.querySelector(".popup__image-title");
 export function closePopupByEscapePress(evt){
     //  console.log(evt);
       const openedPopup = document.querySelector(".popup_opened")
@@ -17,16 +18,16 @@ export function closePopupByEscapePress(evt){
       closePopup(openedPopup); }
   }
 
-// Функция открывает попап с большой картинкой, принимает на вход объект
-export function openPopupFullImage(image){
-    // Присваиваем попапу адрес исходного изображения
-    console.log(image);
-    imagePopup.src = image.toElement.src;
-    // И подпись из карточки    
-    imagePopupTitle.textContent = image.target.offsetParent.innerText;
-    //Вызываем универсальную функцию открытия попапа    
-    openPopup(popupFullimage);
-}
+// // Функция открывает попап с большой картинкой, принимает на вход объект
+// export function openPopupFullImage(image){
+//     // Присваиваем попапу адрес исходного изображения
+//     console.log(image);
+//     imagePopup.src = image.toElement.src;
+//     // И подпись из карточки    
+//     imagePopupTitle.textContent = image.target.offsetParent.innerText;
+//     //Вызываем универсальную функцию открытия попапа    
+//     openPopup(popupFullimage);
+// }
 
 //Открывем попап, устанавливаем нужные слушатели
 export function openPopup(popup){
@@ -46,7 +47,7 @@ export function closePopup(popup){
 //    removeMouseClickPopup(popup);     
 }
 
-//Функция переключает вид лайка сердечка
-export function toggleIcon(evt) {
-    evt.target.classList.toggle('element__icon_active'); 
-    }
+// //Функция переключает вид лайка сердечка
+// export function toggleIcon(evt) {
+//     evt.target.classList.toggle('element__icon_active'); 
+//     }

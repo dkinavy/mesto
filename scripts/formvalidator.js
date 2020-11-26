@@ -22,10 +22,24 @@ export class FormValidator{
     }
 //enableValidation теперь будет проще, так как вызывается только для одного объекта
     enableValidation(){
+       // this._disableButton();
+        this._toggleButtonState()
         this._form.addEventListener('submit', (evt) => {
         evt.preventDefault();
- //       console.log(input)
-    });
+    
+// Комментарий ревьюера - Согласно чек-листу:
+// кнопка отправки формы неактивна, если хотя бы одно из полей не проходит валидацию;
+// После добавления новой карточки и при повторном открытии модального окна, есть возможность 
+// создать пустую карточку. Этого не должно происходить. При открытии модального окна, 
+// если вы обнуляете значения полей ввода, необходимо делать кнопку сохранения неактивной и добавлять ей соответствующий класс.
+// Подсказка: данный функционал реализован внутри функции _toggleButtonState. 
+// Чтобы после добавления карточки кнопка  сохранения была задизейблена можно реализацию дизейбла
+//  вынести в отдельную функцию и использовать в данной функции после evt.preventDefault();, а также в функции, _toggleButtonState
+     
+//  this._disableButton();
+// Сделал как в подсказке, но не совсем понял как воспроизвести описываемый сценарий. Если сразу вызывать _toggleButtonState то помоему эта строчка тут не нужна..
+
+});
 // В установку слушателей тоже не нужно больше пробрасывать переменные, они все есть в объекте
     this._setEventListeners() 
     }
@@ -75,9 +89,12 @@ export class FormValidator{
             this._button.disabled = false;
             this._button.classList.remove(this._inactiveButtonClass);
         } else {
-            this._button.disabled = true;
-            this._button.classList.add(this._inactiveButtonClass);
+            this._disableButton()
         }
+    }
+    _disableButton(){
+        this._button.disabled = true;
+        this._button.classList.add(this._inactiveButtonClass);
     }
 }
 
