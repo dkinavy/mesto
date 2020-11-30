@@ -1,8 +1,19 @@
-// Импортируем наши модули
-import {FormValidator} from "../scripts/formvalidator.js";
-import {configs} from "../scripts/formvalidator.js";
-import {Card,initialCards} from "../scripts/card.js";
-import {popupFullimage,closePopup, openPopup, closePopupByEscapePress,closePopupByMouseClick} from "../scripts/utils.js";
+// Импортируем новые классы 
+// import {FormValidator} from "../scripts/formvalidator.js";
+// import {configs} from "../scripts/formvalidator.js";
+// import {Card,initialCards} from "../scripts/card.js";
+// import {popupFullimage,closePopup, openPopup, closePopupByEscapePress,closePopupByMouseClick} from "../scripts/utils.js";
+
+
+import {Card, initialCards} from '../components/Card.js';
+import {FormValidator} from '../components/FormValidator.js';
+import {Popup} from '../components/Popup.js';
+import {PopupWithForm} from '../components/PopupWithForm.js';
+import {PopupWithImage} from '../components/PopupWithImage.js';
+import {Section} from '../components/Section.js';
+import {UserInfo} from '../components/UserInfo.js';
+
+
 // Сделаем селекторы для основного окна и для контейнера с карточками
 const container = document.querySelector('.content');
 const elements = container.querySelector('.elements');
@@ -32,75 +43,99 @@ const jobInput = document.querySelector(".popup__input_type_job");
 const imagePlace = document.querySelector(".popup__input_type_place");
 const imageLink = document.querySelector(".popup__input_type_link");
 
-    // создадим валидаторы для всех форм
-    const forms = Array.from(document.querySelectorAll(configs.formSelector));
+//
 
-    forms.forEach(form =>{
-        const validator = new FormValidator(configs, form);
-        validator.enableValidation ();
+const data = { 
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'};
+
+ const first = new Card({data},       
+ '#element-template',{handleCardClick: (data) => {
+    photoPopup.open(data);}
+  })
+  console.log(first)
+  
+  new Section({items: first,
+    renderer: (data) => {
  
-    })
+    //   card.setLikeCount(data);
+    this.elements.prepend(data);
+    // }
+    }
+  }, '.elements');
 
-//Функция открывает попап профиля и загружает в него данные с страницы
-function openPopupProfile(){    
+
+
+
+//     // создадим валидаторы для всех форм
+// const forms = Array.from(document.querySelectorAll(configs.formSelector));
+
+//     forms.forEach(form =>{
+//         const validator = new FormValidator(configs, form);
+//         validator.enableValidation ();
+ 
+//     })
+
+// //Функция открывает попап профиля и загружает в него данные с страницы
+// function openPopupProfile(){    
     
-    // Вставим значения с основной страницы в поля формы
-    nameInput.value = profileName.textContent;
-    jobInput.value = profileTitle.textContent;
-    //Вызовем универсальную функцию открытия попапа
-    openPopup (popupProfile);
-}
-
-// //Функция открывает попап картинки с местом, но ничего не загружает со страницы
-// function openPopupPlace(){
-//     openPopup(addCardPopup);
+//     // Вставим значения с основной страницы в поля формы
+//     nameInput.value = profileName.textContent;
+//     jobInput.value = profileTitle.textContent;
+//     //Вызовем универсальную функцию открытия попапа
+//     openPopup (popupProfile);
 // }
 
-// Обработчик «отправки» формы, хотя пока
-// она никуда отправляться не будет
-function submitFormHandler (evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-    // Вставьте новые значения с помощью textContent
-    profileName.textContent = nameInput.value;
-    profileTitle.textContent = jobInput.value;
-    closePopup(popupProfile);
-}
+// // //Функция открывает попап картинки с местом, но ничего не загружает со страницы
+// // function openPopupPlace(){
+// //     openPopup(addCardPopup);
+// // }
 
-function submitFormImage (evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-    const newCard = {
-        name: imagePlace.value,
-        link: imageLink.value
-    };
-    // Вставим новую карточку
-    const card = new Card(newCard, '#element-template');
-    const cardElement = card.generateCard();
-    formImageElement.reset();
+// // Обработчик «отправки» формы, хотя пока
+// // она никуда отправляться не будет
+// function submitFormHandler (evt) {
+//     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+//     // Вставьте новые значения с помощью textContent
+//     profileName.textContent = nameInput.value;
+//     profileTitle.textContent = jobInput.value;
+//     closePopup(popupProfile);
+// }
 
-    addCard(cardElement);
-    closePopup(addCardPopup);
-}
+// function submitFormImage (evt) {
+//     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+//     const newCard = {
+//         name: imagePlace.value,
+//         link: imageLink.value
+//     };
+//     // Вставим новую карточку
+//     const card = new Card(newCard, '#element-template');
+//     const cardElement = card.generateCard();
+//     formImageElement.reset();
 
-function addCard(cardElement){
-    elements.prepend(cardElement);
-}
+//     addCard(cardElement);
+//     closePopup(addCardPopup);
+// }
+
+// function addCard(cardElement){
+//     elements.prepend(cardElement);
+// }
 
 // Создадим класс карточки
 
-initialCards.forEach((item) => {
-    const card = new Card(item, '#element-template');
-    const cardElement = card.generateCard();
+// initialCards.forEach((item) => {
+//     const card = new Card(item, '#element-template');
+//     const cardElement = card.generateCard();
     
-    addCard(cardElement);
-    });
+//     addCard(cardElement);
+//     });
 
-// Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
-formProfileElement.addEventListener('submit', submitFormHandler);
-formImageElement.addEventListener('submit', submitFormImage); 
-//Обрабатываем клики
-buttonOpenProfilePopup.addEventListener("click", openPopupProfile);
-buttonCloseProfilePopup.addEventListener("click", () => closePopup(popupProfile));
-buttonOpenImagePopup.addEventListener("click", ()=>openPopup(addCardPopup));
-buttonCloseImagePopup.addEventListener("click", () => closePopup(addCardPopup));
-popupClosedFullImage.addEventListener("click", () => closePopup(popupFullimage));
+// // Прикрепляем обработчик к форме:
+// // он будет следить за событием “submit” - «отправка»
+// formProfileElement.addEventListener('submit', submitFormHandler);
+// formImageElement.addEventListener('submit', submitFormImage); 
+// //Обрабатываем клики
+// buttonOpenProfilePopup.addEventListener("click", openPopupProfile);
+// buttonCloseProfilePopup.addEventListener("click", () => closePopup(popupProfile));
+// buttonOpenImagePopup.addEventListener("click", ()=>openPopup(addCardPopup));
+// buttonCloseImagePopup.addEventListener("click", () => closePopup(addCardPopup));
+// popupClosedFullImage.addEventListener("click", () => closePopup(popupFullimage));

@@ -1,0 +1,19 @@
+{
+  "name": "yandex_praktikum",
+  "version": "0.0.1",
+  "description": "Это студенческий проект Яндекс.Практикума специализация \"Web разработка\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkinavy/mesto.git"
+  },
+  "author": "Dennis K",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dkinavy/mesto/issues"
+  },
+  "homepage": "https://github.com/dkinavy/mesto#readme"
+}
