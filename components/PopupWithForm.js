@@ -13,19 +13,19 @@ export class PopupWithForm extends Popup {
     
     
     _getInputValues(){
-        this._inputs = Array.from(this._form.querySelectorAll(this._inputSelector));
-        this._button = this._form.querySelector(this._submitButtonSelector);
-        
+        this._inputs = Array.from(this._form.querySelectorAll('.popup__input'));
+
+        const inputsData = {};
+      //  console.log(this._inputs);
         this._inputs.forEach(input => {
-            input.addEventListener('input', (evt) => {
-                //проверяем на валидность
-                this._checkInputValidity(input);
-          //      console.log(input)
-                // меняем состояние кнопки отправки в зависимости от валидности всех инпутов
-                this._isAllValid = this._form.checkValidity();
-                this._toggleButtonState();
-            });
+            // console.log(input.id);
+            // console.log(input.value);
+            inputsData[input.id] = input.value;
+
+            
         });
+        console.log(inputsData);
+        return inputsData;
 
     }
     // Перезаписывает родительский метод setEventListeners. Метод setEventListeners 
@@ -37,7 +37,10 @@ export class PopupWithForm extends Popup {
                 this.close();
             }
         });
-        this._form.addEventListener('submit', this._submit(this._getInputValues()));
+        this._form.addEventListener('submit', (evt)=>{
+            evt.preventDefault();
+            this._submitForm(this._getInputValues());
+        }) 
     }
     //Перезаписывает родительский метод close, так как при закрытии попапа форма должна ещё и сбрасываться.
 

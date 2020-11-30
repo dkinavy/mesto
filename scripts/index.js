@@ -17,7 +17,8 @@ import {UserInfo} from '../components/UserInfo.js';
 // Сделаем селекторы для основного окна и для контейнера с карточками
 const container = document.querySelector('.content');
 const elements = container.querySelector('.elements');
-
+const popupSelector = '.popup';
+const popupImageSelector = '.popup__fullimage';
 // Зададим переменные для попапа профиля
 const buttonOpenProfilePopup = document.querySelector(".profile__edit-button")
 const buttonCloseProfilePopup = document.querySelector(".popup__close-type-profile")
@@ -27,13 +28,15 @@ const buttonOpenImagePopup = document.querySelector(".profile__add-button")
 const buttonCloseImagePopup = document.querySelector(".popup__close-type-image")
 const addCardPopup = document.querySelector(".popup__add-card")
 // // Зададим переменные для попапа полноразмерного изображения
-
+const popupFullimage = document.querySelector(".popup__fullimage")
 const popupClosedFullImage = document.querySelector(".popup__close-type-fullimage");
 
 
 // Находим форму в DOM
 const formProfileElement = document.querySelector(".popup__form_type_profile");
 const formImageElement = document.querySelector(".popup__form_type_image");// Воспользуйтесь методом querySelector()
+const formsList = Array.from(document.forms);
+
 // Находим поля формы в DOM 
 const profileName = document.querySelector(".profile__info-name");
 const profileTitle = document.querySelector(".profile__info-title");
@@ -45,28 +48,66 @@ const imageLink = document.querySelector(".popup__input_type_link");
 
 //
 
-const data = { 
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'};
+// const data = { 
+//     name: 'Архыз',
+//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'};
 
- const first = new Card({data},       
- '#element-template',{handleCardClick: (data) => {
-    photoPopup.open(data);}
-  })
-  console.log(first)
-  
-  new Section({items: first,
-    renderer: (data) => {
- 
-    //   card.setLikeCount(data);
-    this.elements.prepend(data);
-    // }
+//  const first = new Card({data},       
+//  '#element-template',{handleCardClick: (data) => {
+//     photoPopup.open(data);}
+//   })
+//   console.log(first)
+
+
+//Заполним первоначальные 6 карточек
+  const cardList = new Section({
+    items: initialCards,
+    renderer: (element) => {
+        const card = new Card(element,       
+             '#element-template',
+             {handleCardClick: (element) => {
+                //console.log(element)
+
+                const imagePopup = new PopupWithImage(popupImageSelector);
+                imagePopup.open(element);
+            }
+              });
+    
+    const cardElement = card.generateCard();
+    
+    cardList.addItem(cardElement);
     }
   }, '.elements');
 
+  cardList.renderCards()
+  
+//Обрабатываем клики
+
+  const openPopupProfile = new PopupWithForm('.popup__add-card', {
+    submitForm: (element) => {
+        const card = new Card(element,       
+            '#element-template',
+            {handleCardClick: (element) => {
+               //console.log(element)
+
+               const imagePopup = new PopupWithImage(popupImageSelector);
+               imagePopup.open(element);
+           }
+             });
+      const cardElement = card.generateCard();
+      cardList.addItem(cardElement, 'prepend');
+    }
+  })
+ // console.log(openPopupProfile)
 
 
 
+
+  buttonOpenProfilePopup.addEventListener("click", () => {
+    //openPopupProfile.open();
+  });
+ 
+  buttonOpenImagePopup.addEventListener("click", ()=> openPopupProfile.open());
 //     // создадим валидаторы для всех форм
 // const forms = Array.from(document.querySelectorAll(configs.formSelector));
 

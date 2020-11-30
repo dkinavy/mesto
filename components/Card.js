@@ -6,40 +6,45 @@
 //     openPopup,
 //     popupFullimage
 // } from "../scripts/utils.js";
+const imagePopup = document.querySelector(".image-popup");
+const imagePopupTitle = document.querySelector(".popup__image-title");
 
 // Шесть карточек из коробки
 export const initialCards = [{
-    name: 'Архыз',
+    place: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
 },
 {
-    name: 'Челябинская область',
+    place: 'Челябинская область',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
 },
 {
-    name: 'Иваново',
+    place: 'Иваново',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
 },
 {
-    name: 'Камчатка',
+    place: 'Камчатка',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
 },
 {
-    name: 'Холмогорский район',
+    place: 'Холмогорский район',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
 },
 {
-    name: 'Байкал',
+    place: 'Байкал',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
 }
 ];
 
+// Свяжите класс Card c попапом. Сделайте так, чтобы Card принимал в конструктор функцию handleCardClick. 
+// Эта функция должна открывать попап с картинкой при клике на карточку.
+
 export class Card {
-    constructor({data}, cardSelector,{handleCardClick}) {
-        console.log(data.name)
+    constructor(data, cardSelector,{handleCardClick}) {
+      //  console.log(data.name)
 
         this._data = data;
-        this._text = data.name;
+        this._text = data.place;
         this._image = data.link;
         this._cardSelector = cardSelector;
         this._handleCardClick = handleCardClick;
@@ -57,25 +62,23 @@ export class Card {
 
 
     _setEventListeners() {
-        this._photoImage.addEventListener('click', () => {
-            this._handleCardClick(this._data);
-          })
 
 
-        this._element.querySelector('.element__image').addEventListener('click', this._openPopupFullImage.bind(this));
+
+       this._element.querySelector('.element__image').addEventListener('click', ()=> this._handleCardClick(this._data));
 
         //Добавим листнер клика по корзине которая удалит картинку
         this._element.querySelector('.element__trash').addEventListener('click', function (evt) {
             evt.target.closest('.element').remove();
         });
-        //Добавим листнер клика по сердечку который меняет цвет
+        // Добавим листнер клика по сердечку который меняет цвет
         this._element.querySelector('.element__icon').addEventListener('click',
             this._toggleIcon);
-        document.addEventListener('keydown', closePopupByEscapePress);
-        this._element.addEventListener('click', closePopupByMouseClick);
+        // document.addEventListener('keydown', closePopupByEscapePress);
+        // this._element.querySelector('.element__image').addEventListener('click', closePopupByMouseClick);
 
     }
-
+    
     generateCard() {
         this._element = this._getTemplate();
         this._setEventListeners();

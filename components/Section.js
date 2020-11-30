@@ -16,7 +16,8 @@ export class Section{
     //Публичный метод, который отвечает за отрисовку всех элементов. 
     //Отрисовка каждого отдельного элемента должна осуществляться функцией renderer
     renderCards(){
-        items.forEach(item => {
+        this._items.forEach(item => {
+            console.log(item)
             this._renderer(item)
         })
     }
