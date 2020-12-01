@@ -1,9 +1,3 @@
-// Импортируем новые классы 
-// import {FormValidator} from "../scripts/formvalidator.js";
-// import {configs} from "../scripts/formvalidator.js";
-// import {Card,initialCards} from "../scripts/card.js";
-// import {popupFullimage,closePopup, openPopup, closePopupByEscapePress,closePopupByMouseClick} from "../scripts/utils.js";
-
 
 import {Card, initialCards} from '../components/Card.js';
 import {FormValidator} from '../components/FormValidator.js';
@@ -13,38 +7,45 @@ import {PopupWithImage} from '../components/PopupWithImage.js';
 import {Section} from '../components/Section.js';
 import {UserInfo} from '../components/UserInfo.js';
 
-
+const configs = ({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__save',
+    inactiveButtonClass: 'popup__save_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible' 
+  }); 
 // Сделаем селекторы для основного окна и для контейнера с карточками
 const container = document.querySelector('.content');
-const elements = container.querySelector('.elements');
-const popupSelector = '.popup';
+// const elements = container.querySelector('.elements');
+// const popupSelector = '.popup';
 const popupImageSelector = '.popup__fullimage';
 // Зададим переменные для попапа профиля
 const buttonOpenProfilePopup = document.querySelector(".profile__edit-button")
-const buttonCloseProfilePopup = document.querySelector(".popup__close-type-profile")
-const popupProfile = document.querySelector(".popup__profile")
+// const buttonCloseProfilePopup = document.querySelector(".popup__close-type-profile")
+//const popupProfile = document.querySelector(".popup__profile")
 // Зададим переменные для нового попапа добавления карточки
 const buttonOpenImagePopup = document.querySelector(".profile__add-button")
-const buttonCloseImagePopup = document.querySelector(".popup__close-type-image")
-const addCardPopup = document.querySelector(".popup__add-card")
+// const buttonCloseImagePopup = document.querySelector(".popup__close-type-image")
+//const addCardPopup = document.querySelector(".popup__add-card")
 // // Зададим переменные для попапа полноразмерного изображения
-const popupFullimage = document.querySelector(".popup__fullimage")
-const popupClosedFullImage = document.querySelector(".popup__close-type-fullimage");
+// const popupFullimage = document.querySelector(".popup__fullimage")
+// const popupClosedFullImage = document.querySelector(".popup__close-type-fullimage");
 
 
 // Находим форму в DOM
-const formProfileElement = document.querySelector(".popup__form_type_profile");
-const formImageElement = document.querySelector(".popup__form_type_image");// Воспользуйтесь методом querySelector()
-const formsList = Array.from(document.forms);
+// const formProfileElement = document.querySelector(".popup__form_type_profile");
+// const formImageElement = document.querySelector(".popup__form_type_image");// Воспользуйтесь методом querySelector()
+// const formsList = Array.from(document.forms);
 
 // Находим поля формы в DOM 
-const profileName = document.querySelector(".profile__info-name");
-const profileTitle = document.querySelector(".profile__info-title");
+// const profileName = document.querySelector(".profile__info-name");
+// const profileTitle = document.querySelector(".profile__info-title");
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_job");
 // Поля карточки с картинкой
-const imagePlace = document.querySelector(".popup__input_type_place");
-const imageLink = document.querySelector(".popup__input_type_link");
+// const imagePlace = document.querySelector(".popup__input_type_place");
+// const imageLink = document.querySelector(".popup__input_type_link");
 
 //
 
@@ -67,7 +68,6 @@ const imageLink = document.querySelector(".popup__input_type_link");
              '#element-template',
              {handleCardClick: (element) => {
                 //console.log(element)
-
                 const imagePopup = new PopupWithImage(popupImageSelector);
                 imagePopup.open(element);
             }
@@ -83,13 +83,12 @@ const imageLink = document.querySelector(".popup__input_type_link");
   
 //Обрабатываем клики
 
-  const openPopupProfile = new PopupWithForm('.popup__add-card', {
+  const addCardPopup = new PopupWithForm('.popup__add-card', {
     submitForm: (element) => {
         const card = new Card(element,       
             '#element-template',
             {handleCardClick: (element) => {
                //console.log(element)
-
                const imagePopup = new PopupWithImage(popupImageSelector);
                imagePopup.open(element);
            }
@@ -99,16 +98,39 @@ const imageLink = document.querySelector(".popup__input_type_link");
     }
   })
  // console.log(openPopupProfile)
+const userNameSelector = '.profile__info-name';
+const userJobSelector = '.profile__info-title';
+ 
+ const popupProfile = new PopupWithForm('.popup__profile', {
+    submitForm: (element) => {
+        const userInfo = new UserInfo ({userNameSelector,userJobSelector})
+        userInfo.setUserInfo(element);
+
+    }
+ });
 
 
 
-
+// Добавим слушатели на кнопки
   buttonOpenProfilePopup.addEventListener("click", () => {
+    const userInfo = new UserInfo({userNameSelector,userJobSelector})
+    const userData = userInfo.getUserInfo();
+    nameInput.value = userData.name;
+    jobInput.value = userData.job;
     //openPopupProfile.open();
+    popupProfile.open();
   });
  
-  buttonOpenImagePopup.addEventListener("click", ()=> openPopupProfile.open());
-//     // создадим валидаторы для всех форм
+  buttonOpenImagePopup.addEventListener("click", ()=> addCardPopup.open());
+     // создадим валидаторы для всех форм
+     const forms = Array.from(document.querySelectorAll(configs.formSelector));
+     forms.forEach(form =>{
+         const validator = new FormValidator(configs, form);
+         validator.enableValidation ();
+ 
+     })
+//      }
+
 // const forms = Array.from(document.querySelectorAll(configs.formSelector));
 
 //     forms.forEach(form =>{

@@ -24,7 +24,7 @@ export class PopupWithForm extends Popup {
 
             
         });
-        console.log(inputsData);
+        //console.log(inputsData);
         return inputsData;
 
     }
@@ -32,6 +32,7 @@ export class PopupWithForm extends Popup {
     // класса PopupWithForm должен не только добавлять обработчик клика иконке закрытия, 
     // но и добавлять обработчик сабмита формы.
     setEventListeners(){
+        document.addEventListener('keydown', this._handleEscClose.bind(this));
         this._popupElement.addEventListener('click', (evt)=>{
             if (evt.target.classList.contains('popup__close')) {
                 this.close();
@@ -40,9 +41,13 @@ export class PopupWithForm extends Popup {
         this._form.addEventListener('submit', (evt)=>{
             evt.preventDefault();
             this._submitForm(this._getInputValues());
+            this.close();
         }) 
     }
     //Перезаписывает родительский метод close, так как при закрытии попапа форма должна ещё и сбрасываться.
-
+    close() {
+        this._form.reset();
+        super.close();
+      }
 }
 

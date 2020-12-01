@@ -12,15 +12,16 @@ export class UserInfo {
     // Этот метод пригодится когда данные пользователя нужно будет подставить в форму при открытии.
     getUserInfo(){
         const userData = {
-            name: this.document.querySelector(this._userNameSelector),
-            job: this.document.querySelector(this._userJobSelector)
+            name: this._name.textContent,
+            job: this._job.textContent
         }
         
         return userData;
     }
     // Содержит публичный метод setUserInfo, который принимает новые данные пользователя 
     // и добавляет их на страницу.
-    setUserInfo(){
-
+    setUserInfo(info){
+        this._name.textContent = info.name;
+        this._job.textContent = info.job;
     }
 }

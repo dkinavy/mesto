@@ -17,7 +17,7 @@ export class Section{
     //Отрисовка каждого отдельного элемента должна осуществляться функцией renderer
     renderCards(){
         this._items.forEach(item => {
-            console.log(item)
+           // console.log(item)
             this._renderer(item)
         })
     }
