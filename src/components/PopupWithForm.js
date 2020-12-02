@@ -8,6 +8,11 @@ export class PopupWithForm extends Popup {
         super(popupSelector);  //Вызываем метод родителя this._popupSelector = popupSelector;
         this._submitForm = submitForm;
         this._form = this._popupElement.querySelector('.popup__form');
+        this._listener = (evt)=>{
+            evt.preventDefault();
+            this._submitForm(this._getInputValues());
+            this.close();
+        };
     }
     // Содержит приватный метод _getInputValues, который собирает данные всех полей формы.
     
@@ -34,18 +39,15 @@ export class PopupWithForm extends Popup {
     setEventListeners(){
         document.addEventListener('keydown', this._handleEscClose.bind(this));
         this._popupElement.addEventListener('click', (evt)=>{
-            if (evt.target.classList.contains('popup__close')) {
+            if (evt.target.classList.contains('popup__close')|| evt.target.classList.contains('popup')) {
                 this.close();
             }
         });
-        this._form.addEventListener('submit', (evt)=>{
-            evt.preventDefault();
-            this._submitForm(this._getInputValues());
-            this.close();
-        }) 
+        this._form.addEventListener('submit',this._listener ) 
     }
     //Перезаписывает родительский метод close, так как при закрытии попапа форма должна ещё и сбрасываться.
     close() {
+        this._form.removeEventListener('submit',this._listener ) 
         this._form.reset();
         super.close();
       }
