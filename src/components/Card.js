@@ -1,11 +1,4 @@
-// import {
-//     imagePopup,
-//     imagePopupTitle,
-//     closePopupByEscapePress,
-//     closePopupByMouseClick,
-//     openPopup,
-//     popupFullimage
-// } from "../scripts/utils.js";
+
 const imagePopup = document.querySelector(".image-popup");
 const imagePopupTitle = document.querySelector(".popup__image-title");
 
