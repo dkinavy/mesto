@@ -44,8 +44,13 @@ export class Popup {
         this._popupElement.addEventListener('click', this._handleClickClose);
         
     }
+
+    //1) в классе Popup не исправлено добавление слушателя в методе removeEventListeners
+// в классе Popup не исправлено добавление и удаление слушателей (все как было на прошлой итерации)
+
+// Вот тут забыл bind убрать, ага ) 
     removeEventListeners(){
-        document.addEventListener('keydown', this._handleEscClose.bind(this));
+        document.removeEventListener('keydown', this._handleEscClose);
         
         //this._popupElement.reset();
         this._popupElement.removeEventListener('click', this._handleClickClose);
