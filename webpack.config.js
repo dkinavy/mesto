@@ -9,7 +9,7 @@ module.exports = {
         filename: 'main.js',
                 publicPath: ''
     },
-
+    devtool: 'eval',
     mode: 'development',
   devServer: {
     contentBase: path.resolve(__dirname, './dist'), // путь, куда "смотрит" режим разработчика
