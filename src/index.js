@@ -54,61 +54,41 @@ yandex_api.getUserInfo()
 //   вынести в отдельную функцию (создать можно внутри коллбека then после 
 //     ответа сервера, если необходим доступ к полученному ответу оттуда) 
 //     и использовать в двух местах - в цикле и в handleFormSubmit попапа
-const createNewCard = (data) =>{
-  const card = new Card(element,       
-    '#element-template',
-    {handleCardClick: (element) => {
-       //console.log(element)
-       const imagePopup = new PopupWithImage(popupImageSelector);
-       imagePopup.open(element);
-   }
-     });
+const createNewCard = (data) => {
+  const card = new Card(data,'#element-template', 
+  {handleCardClick: (element) => {
+    //console.log(element)
+    const imagePopup = new PopupWithImage(popupImageSelector);
+    imagePopup.open(element);
+}
+
+  });
+  return card;
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+const cardList = new Section({
+  
+  renderer: (element) => {
+      const card = new createNewCard(element)
+  
+      const cardElement = card.generateCard();
+  
+      cardList.addItem(cardElement);
+  }
+}, '.elements');
 
 //Вызовем метод этого объекта который загружает имеющиеся карты в список
 
 yandex_api.getInitialCards()
   .then((data) => {
-// Заполним первоначальные карточки
-// будем грузить их с сервера
-//console.log(data);
-  const cardList = new Section({
-    items: data,
-    renderer: (element) => {
-        const card = new Card(element,       
-             '#element-template',
-             {handleCardClick: (element) => {
-                //console.log(element)
-                const imagePopup = new PopupWithImage(popupImageSelector);
-                imagePopup.open(element);
-            }
-              });
-    
-    const cardElement = card.generateCard();
-    
-    cardList.addItem(cardElement);
-    }
-  }, '.elements');
-// Отрисуем список
-  cardList.renderCards()
+  // Заполним первоначальные карточки
+  // будем грузить их с сервера
+  //console.log(data);
+
+  // Отрисуем список
+  cardList.renderCards(data)
   })
   .catch((err) => {
     console.log(err);
@@ -118,14 +98,14 @@ yandex_api.getInitialCards()
   const addCardPopup = new PopupWithForm('.popup__add-card', {
     submitForm: (element) => {
       yandex_api.addCard(element)
-      .then((res)=>{
-       
+      .then((res) => {return res.json()})
+      .then((res) => {
+        console.log(res);
+        const card = createNewCard (res);
         const cardElement = card.generateCard();
-        cardsList.addItem(cardElement, 'prepend');
+ 
+    cardList.addItem(cardElement);
       })
-
-
-
 
     }
   })
@@ -144,20 +124,9 @@ yandex_api.getInitialCards()
  });
 
 
-
-
-
 // Добавим слушатели на кнопки
   buttonOpenProfilePopup.addEventListener("click", () => {
-    // const userInfo = new UserInfo({userNameSelector,userJobSelector})
-    // const userData = userInfo.getUserInfo();
 
-    // yandex_api.setUserInfo()
-    // .then((data)=>{
-    //   nameInput.value = data.name;
-    //   jobInput.value = data.about;
-    // });
-    // //openPopupProfile.open();
     popupProfile.open();
   });
  
