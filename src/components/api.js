@@ -60,7 +60,19 @@ export class Api {
         headers: this._headers
       })
     }
-
+    deleteLike(data) {
+      return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
+        method: 'DELETE',
+        headers: this._headers,
+      })
+    }
+  
+    putLike(data) {
+      return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
+        method: 'PUT',
+        headers: this._headers,
+      })
+    }
 
   }
   

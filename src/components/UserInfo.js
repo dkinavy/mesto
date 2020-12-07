@@ -9,6 +9,7 @@ export class UserInfo {
         this._name = document.querySelector(this._userNameSelector);
         this._job = document.querySelector(this._userJobSelector);
         this._avatar = document.querySelector(this._userAvatarSelector);
+        
     }
     // Содержит публичный метод getUserInfo, который возвращает объект с данными пользователя. 
     // Этот метод пригодится когда данные пользователя нужно будет подставить в форму при открытии.

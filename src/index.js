@@ -36,6 +36,7 @@ const userJobSelector = '.profile__info-title';
 const userAvatarSelector = '.profile__avatar';
 
 const userInfo = new UserInfo({userNameSelector,userJobSelector,userAvatarSelector})
+let ownerId = null;
 
 //Создадим объект для работы с апи
 const yandex_api = new Api({
@@ -50,6 +51,7 @@ const yandex_api = new Api({
 yandex_api.getUserInfo()
 .then((data)=>{
   userInfo.setUserInfo(data);
+  ownerId = data._id;
 })
 .catch((error) => console.log(error))
 
@@ -59,7 +61,7 @@ yandex_api.getUserInfo()
 //     ответа сервера, если необходим доступ к полученному ответу оттуда) 
 //     и использовать в двух местах - в цикле и в handleFormSubmit попапа
 const createNewCard = (data) => {
-  const card = new Card(data,'#element-template', 
+  const card = new Card(data,'#element-template', ownerId,
   {handleCardClick: (element) => {
     //console.log(element)
     const imagePopup = new PopupWithImage(popupImageSelector);
@@ -68,7 +70,25 @@ const createNewCard = (data) => {
   //console.log(element)
   delitingCard = card;
   deleteCardPopup.open(data);
-}
+},    
+  putLike: (data) => {
+    yandex_api.putLike(data)
+    .then((data) => {
+  //    card.setLikeCount(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+},
+deleteLike: (data) => {
+  yandex_api.deleteLike(data)
+    .then((data) => {
+  //    card.setLikeCount(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+},
 
   });
   return card;
