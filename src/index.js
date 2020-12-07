@@ -4,6 +4,7 @@ import {FormValidator} from './components/FormValidator.js';
 // import {Popup} from './components/Popup.js';
 import {PopupWithForm} from './components/PopupWithForm.js';
 import {PopupWithImage} from './components/PopupWithImage.js';
+import {PopupWithDelete} from './components/PopupWithDelete.js';
 import {Section} from './components/Section.js';
 import {UserInfo} from './components/UserInfo.js';
 import {Api} from './components/Api.js';
@@ -14,12 +15,14 @@ const configs = ({
     submitButtonSelector: '.popup__save',
     inactiveButtonClass: 'popup__save_disabled',
     inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible' 
+    errorClass: 'popup__error_visible', 
+    
   }); 
 // Сделаем селекторы для основного окна и для контейнера с карточками
 const container = document.querySelector('.content');
 
 const popupImageSelector = '.popup__fullimage';
+const popupDeleteSelector = '.popup__delete';
 // Зададим переменные для попапа профиля
 const buttonOpenProfilePopup = document.querySelector(".profile__edit-button")
 
@@ -48,6 +51,7 @@ yandex_api.getUserInfo()
 .then((data)=>{
   userInfo.setUserInfo(data);
 })
+.catch((error) => console.log(error))
 
 // Процесс создания одной карточки (как в случае, когда мы проходим циклом 
 //   по начальным карточкам, так и в случае создания новой карточки) можно 
@@ -60,6 +64,10 @@ const createNewCard = (data) => {
     //console.log(element)
     const imagePopup = new PopupWithImage(popupImageSelector);
     imagePopup.open(element);
+},handleDeleteCardClick: () => {
+  //console.log(element)
+  delitingCard = card;
+  deleteCardPopup.open(data);
 }
 
   });
@@ -106,10 +114,28 @@ yandex_api.getInitialCards()
  
     cardList.addItem(cardElement);
       })
+      .catch((error) => console.log(error))
 
     }
   })
- // console.log(openPopupProfile)
+
+
+ //Попап с формой удаления карточки
+ let delitingCard = null;
+ const deleteCardPopup = new PopupWithDelete('.popup__delete', {
+  submitForm: (element) => {
+    //К сожалению fetch не пробрасывает ошибку в случае 403
+    //Пол дня убил пытаясь понять почему он не пишет в консоль при попытку удалить чужую картинку
+      yandex_api.deleteCard(element)
+      .then(() => delitingCard.deleteCard())
+      .then(() => deleteCardPopup.close())
+      .catch((er) => console.log(er))
+  }
+});
+
+
+
+
 
  //Попап с формой редактирования инфы о пользователе
  const popupProfile = new PopupWithForm('.popup__profile', {
@@ -120,6 +146,7 @@ yandex_api.getInitialCards()
         .then((res) => {
           userInfo.setUserInfo(res);
         })
+        .catch((error) => console.log(error))
     }
  });
 
@@ -132,7 +159,8 @@ yandex_api.getInitialCards()
  
   buttonOpenImagePopup.addEventListener("click", ()=> addCardPopup.open());
      // создадим валидаторы для всех форм
-     const forms = Array.from(document.querySelectorAll(configs.formSelector));
+  const forms = Array.from(document.querySelectorAll(configs.formSelector));
+  console.log(forms)
      forms.forEach(form =>{
          const validator = new FormValidator(configs, form);
          validator.enableValidation ();

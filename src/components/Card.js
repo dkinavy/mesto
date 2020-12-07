@@ -5,18 +5,24 @@ const imagePopupTitle = document.querySelector(".popup__image-title");
 
 
 export class Card {
-    constructor(data, cardSelector,{handleCardClick}) {
+    constructor(data, cardSelector,{handleCardClick,handleDeleteCardClick}) {
       //  console.log(data.name)
 
         this._data = data;
         this._text = data.name;
         this._image = data.link;
         this._owner = data.owner;
-        this._likes = data.likes;
+        this._likes = data.likes.length;
         this._cardSelector = cardSelector;
         this._handleCardClick = handleCardClick;
+        this._handleDeleteCardClick = handleDeleteCardClick;
     }
 
+
+
+    deleteCard(){
+        this._element.remove(); 
+    }
     _getTemplate() {
         const cardElement = document
             .querySelector(this._cardSelector)
@@ -32,11 +38,14 @@ export class Card {
 
 
 
-       this._element.querySelector('.element__image').addEventListener('click', ()=> this._handleCardClick(this._data));
+       this._element.querySelector('.element__image').addEventListener('click', ()=> 
+       this._handleCardClick(this._data));
 
         //Добавим листнер клика по корзине которая удалит картинку
-        this._element.querySelector('.element__trash').addEventListener('click', function (evt) {
-            evt.target.closest('.element').remove();
+        this._element.querySelector('.element__trash').addEventListener('click', ()=>
+         {
+            this._handleDeleteCardClick(this._data);
+            //evt.target.closest('.element').remove();
         });
         // Добавим листнер клика по сердечку который меняет цвет
         this._element.querySelector('.element__icon').addEventListener('click',
@@ -52,6 +61,7 @@ export class Card {
 
         this._element.querySelector('.element__image').src = this._image;
         this._element.querySelector('.element__name').textContent = this._text;
+        this._element.querySelector('.element__like-count').textContent = this._likes;
 
         return this._element;
     }
