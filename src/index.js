@@ -1,12 +1,28 @@
-import { Card } from "./components/Card.js";
-import { FormValidator } from "./components/FormValidator.js";
+import {
+  Card
+} from "./components/Card.js";
+import {
+  FormValidator
+} from "./components/FormValidator.js";
 // import {Popup} from './components/Popup.js';
-import { PopupWithForm } from "./components/PopupWithForm.js";
-import { PopupWithImage } from "./components/PopupWithImage.js";
-import { PopupWithDelete } from "./components/PopupWithDelete.js";
-import { Section } from "./components/Section.js";
-import { UserInfo } from "./components/UserInfo.js";
-import { Api } from "./components/Api.js";
+import {
+  PopupWithForm
+} from "./components/PopupWithForm.js";
+import {
+  PopupWithImage
+} from "./components/PopupWithImage.js";
+import {
+  PopupWithDelete
+} from "./components/PopupWithDelete.js";
+import {
+  Section
+} from "./components/Section.js";
+import {
+  UserInfo
+} from "./components/UserInfo.js";
+import {
+  Api
+} from "./components/Api.js";
 import "./pages/index.css";
 const configs = {
   formSelector: ".popup__form",
@@ -85,7 +101,7 @@ const createNewCard = (data) => {
           return res.json();
         })
         .then((res) => {
-          console.log(res);
+         // console.log(res);
           card.setLikeCount(res.likes.length);
         })
         .catch((err) => {
@@ -99,7 +115,7 @@ const createNewCard = (data) => {
           return res.json();
         })
         .then((res) => {
-          console.log(res);
+        //  console.log(res);
           card.setLikeCount(res.likes.length);
         })
         .catch((err) => {
@@ -110,8 +126,7 @@ const createNewCard = (data) => {
   return card;
 };
 
-const cardList = new Section(
-  {
+const cardList = new Section({
     renderer: (element) => {
       const card = new createNewCard(element);
 
@@ -149,7 +164,7 @@ const addCardPopup = new PopupWithForm(".popup__add-card", {
         return res.json();
       })
       .then((res) => {
-        console.log(res);
+      //  console.log(res);
         const card = createNewCard(res);
         const cardElement = card.generateCard();
 
@@ -158,20 +173,22 @@ const addCardPopup = new PopupWithForm(".popup__add-card", {
       .catch((error) => console.log(error))
       .finally(() => {
         addCardPopup.loading_off();
-        addCardPopup.close();})
+        addCardPopup.close();
+      })
   },
 });
 //Попап редактируем аватару
 const updateAvatarPopup = new PopupWithForm(".popup__update-avatar", {
   submitForm: (element) => {
 
-  updateAvatarPopup.loading_on();
-  setTimeout(3000)
-  //console.log(element)
-  yandex_api.setUserAvatar(element)
-  .then((res) => {
-    return res.json();    })
-  .then((res) => {
+    updateAvatarPopup.loading_on();
+    setTimeout(3000)
+    //console.log(element)
+    yandex_api.setUserAvatar(element)
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
         userInfo.setUserAvatar(res);
       })
       .catch((err) => {
@@ -179,13 +196,10 @@ const updateAvatarPopup = new PopupWithForm(".popup__update-avatar", {
       })
       .finally(() => {
         updateAvatarPopup.loading_off();
-        updateAvatarPopup.close();})
+        updateAvatarPopup.close();
+      })
   }
 })
-
-
-
-
 
 
 //Попап с формой удаления карточки

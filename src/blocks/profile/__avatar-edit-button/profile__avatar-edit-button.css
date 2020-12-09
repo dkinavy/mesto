@@ -12,7 +12,7 @@
 
 .profile__avatar-edit-button:hover,
 .profile__avatar-edit-button:focus {
-  background-image: url(../../../images/editButton.svg);
+  background-image: url(../../../images/avatar_edit_button.svg);
   background-position: center;
   background-repeat: no-repeat;
   background-color: rgba(0, 0, 0, 0.8);
