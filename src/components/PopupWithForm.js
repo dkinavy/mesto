@@ -9,14 +9,22 @@ export class PopupWithForm extends Popup {
         this._submitForm = submitForm;
         this._form = this._popupElement.querySelector('.popup__form');
         this._inputs = Array.from(this._form.querySelectorAll('.popup__input'));
+        this._submitButton = this._form.querySelector('.popup__save');
         this._listener = (evt)=>{
             evt.preventDefault();
             this._submitForm(this._getInputValues());
-            this.close();
+          //  this.close();
         };
     }
     // Содержит приватный метод _getInputValues, который собирает данные всех полей формы.
     
+      //типа крутим спинер
+  loading_on(){
+    this._submitButton.textContent = 'Сохранение...'
+  }
+  loading_off(){
+    this._submitButton.textContent = 'Сохранить'
+  }
     
     _getInputValues(){
         
