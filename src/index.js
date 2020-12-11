@@ -102,9 +102,6 @@ const createNewCard = (data) => {
       yandex_api
         .putLike(data)
         .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
          // console.log(res);
           card.setLikeCount(res.likes.length);
         })
@@ -115,9 +112,6 @@ const createNewCard = (data) => {
     deleteLike: (data) => {
       yandex_api
         .deleteLike(data)
-        .then((res) => {
-          return res.json();
-        })
         .then((res) => {
         //  console.log(res);
           card.setLikeCount(res.likes.length);
@@ -165,9 +159,6 @@ const addCardPopup = new PopupWithForm(".popup__add-card", {
     yandex_api
       .addCard(element)
       .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
       //  console.log(res);
         const card = createNewCard(res);
         const cardElement = card.generateCard();
@@ -189,9 +180,6 @@ const updateAvatarPopup = new PopupWithForm(".popup__update-avatar", {
     setTimeout(3000)
     //console.log(element)
     yandex_api.setUserAvatar(element)
-      .then((res) => {
-        return res.json();
-      })
       .then((res) => {
         userInfo.setUserAvatar(res);
         updateAvatarPopup.close();
@@ -229,9 +217,6 @@ const popupProfile = new PopupWithForm(".popup__profile", {
     yandex_api
       .setUserInfo(element)
       .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
         userInfo.setUserInfo(res);
         popupProfile.close();
       })
@@ -259,17 +244,14 @@ buttonOpenAvatarEditPopup.addEventListener("click", () => {
 buttonOpenImagePopup.addEventListener("click", () => addCardPopup.open());
 // создадим валидаторы для всех форм
 const forms = Array.from(document.querySelectorAll(configs.formSelector));
-// Инстанцирование экземпляров класса FormValidator и активация валидации 
-// для них должны осуществляться для каждой формы отдельно в global scope, 
-// чтобы доступ к экземплярам класса был во всем файле, а не только в области 
-// видимости данной функции.
-// То есть для каждой формы должен существовать свой именованный экземпляр.
+// Здесь имею в виду, что лучше делать так:
+// const formProfileValidator = new FormValidator(configs, formProfileSelector);
+// formProfileValidator.enableValidation();
 
-// Вот тут совсем непонятно было ) Зачем ? Как проверить что эта цель достигнута и ошибка исправлена ?
-// Жаль что нет связи, пришлось спрашивать преподов
-// Если я вызываю функцию которая определена на глобальном уровне - у меня же создаются глобальные 
-// экземпляры ? Правда я все равно не очень понимаю как я смогу к ним обращаться 
-//на глобальном уровне и отличать один от другого
+// const formAddCardValidator = new FormValidator(configs, formAddCardSelector);
+// formAddCardValidator.enableValidation(); 
+// Вторым аргументом передаем уникальный селектор формы. Таким образом мы имеем независимые экземпляры, с помощью которых можем контролировать состояние каждой формы индивидуально. Например, вызвав formAddCardValidator.toggleButtonState() мы деактивируем кнопку сабмита только для формы добавления карточки. 
+// Такое разделение очень полезно и гибко. Сейчас возможно не требуется контролировать состояние форм по отдельности, но при масштабировании проекта - такая возможность может пригодится
 const setFormValidator = (form) => {
   const formValidator = new FormValidator(configs, form);
   formValidator.enableValidation();
