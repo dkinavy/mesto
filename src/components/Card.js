@@ -1,5 +1,5 @@
-const imagePopup = document.querySelector(".image-popup");
-const imagePopupTitle = document.querySelector(".popup__image-title");
+// const imagePopup = document.querySelector(".image-popup");
+// const imagePopupTitle = document.querySelector(".popup__image-title");
 
 export class Card {
   constructor(
@@ -32,6 +32,7 @@ export class Card {
 
   deleteCard() {
     this._element.remove();
+    
   }
   _getTemplate() {
     const cardElement = document
@@ -94,31 +95,31 @@ export class Card {
 
   generateCard() {
     this._element = this._getTemplate();
+    this.image = this._element.querySelector(".element__image");
     this._setEventListeners();
     this._likeButton = this._element.querySelector(".element__icon");
-    this._element.querySelector(".element__image").src = this._image;
+    this.image.src = this._image;
+    this.image.alt = this._text;
     this._element.querySelector(".element__name").textContent = this._text;
-    this._element.querySelector(
-      ".element__like-count"
-    ).textContent = this._likesCount;
+    this._element.querySelector(".element__like-count").textContent = this._likesCount;
     this._isOwnCard();
     this._isLiked();
     return this._element;
   }
   //**Функции лайка, удаления картинки и превью необходимо реализовать в данном классе
   //Функция переключает вид лайка сердечка
-  _toggleIcon(el) {
-    el.target.classList.toggle("element__icon_active");
-  }
+//   _toggleIcon(el) {
+//     el.target.classList.toggle("element__icon_active");
+//   }
   // Функция открывает попап с большой картинкой, принимает на вход объект
-  _openPopupFullImage() {
-    // Присваиваем попапу адрес исходного изображения
+//   _openPopupFullImage() {
+//     // Присваиваем попапу адрес исходного изображения
 
-    imagePopup.src = this._image;
-    // И подпись из карточки
-    imagePopupTitle.textContent = this._text;
-    //Вызываем универсальную функцию открытия попапа
-    openPopup(popupFullimage);
-  }
+//     imagePopup.src = this._image;
+//     // И подпись из карточки
+//     imagePopupTitle.textContent = this._text;
+//     //Вызываем универсальную функцию открытия попапа
+//     openPopup(popupFullimage);
+//   }
   // Удаление попапа также реализовано в этом классе
 }

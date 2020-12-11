@@ -52,6 +52,10 @@ const userNameSelector = ".profile__info-name";
 const userJobSelector = ".profile__info-title";
 const userAvatarSelector = ".profile__avatar";
 
+//Инстанцирование данного попапа следует вынести в global 
+// scope, чтобы переменная не создавалась каждый раз при вызове данной функции
+const imagePopup = new PopupWithImage(popupImageSelector);
+
 const userInfo = new UserInfo({
   userNameSelector,
   userJobSelector,
@@ -86,7 +90,7 @@ const createNewCard = (data) => {
   const card = new Card(data, "#element-template", ownerId, {
     handleCardClick: (element) => {
       //console.log(element)
-      const imagePopup = new PopupWithImage(popupImageSelector);
+      
       imagePopup.open(element);
     },
     handleDeleteCardClick: () => {
@@ -167,13 +171,13 @@ const addCardPopup = new PopupWithForm(".popup__add-card", {
       //  console.log(res);
         const card = createNewCard(res);
         const cardElement = card.generateCard();
-
         cardList.addItem(cardElement);
+        addCardPopup.close();
       })
       .catch((error) => console.log(error))
       .finally(() => {
         addCardPopup.loading_off();
-        addCardPopup.close();
+        
       })
   },
 });
@@ -190,13 +194,14 @@ const updateAvatarPopup = new PopupWithForm(".popup__update-avatar", {
       })
       .then((res) => {
         userInfo.setUserAvatar(res);
+        updateAvatarPopup.close();
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
         updateAvatarPopup.loading_off();
-        updateAvatarPopup.close();
+
       })
   }
 })
@@ -228,18 +233,25 @@ const popupProfile = new PopupWithForm(".popup__profile", {
       })
       .then((res) => {
         userInfo.setUserInfo(res);
+        popupProfile.close();
       })
       .catch((error) => console.log(error))
       .finally(() => {
         popupProfile.loading_off();
-        popupProfile.close()
+        
       })
   },
 });
 
 // Добавим слушатели на кнопки
 buttonOpenProfilePopup.addEventListener("click", () => {
+  //необходимо устанавливать текущие значения имени и профессии пользователя
+  const userData = userInfo.getUserInfo();
+  nameInput.value = userData.name;
+  jobInput.value = userData.job;
   popupProfile.open();
+ 
+
 });
 buttonOpenAvatarEditPopup.addEventListener("click", () => {
   updateAvatarPopup.open();
@@ -247,8 +259,24 @@ buttonOpenAvatarEditPopup.addEventListener("click", () => {
 buttonOpenImagePopup.addEventListener("click", () => addCardPopup.open());
 // создадим валидаторы для всех форм
 const forms = Array.from(document.querySelectorAll(configs.formSelector));
-// console.log(forms);
+// Инстанцирование экземпляров класса FormValidator и активация валидации 
+// для них должны осуществляться для каждой формы отдельно в global scope, 
+// чтобы доступ к экземплярам класса был во всем файле, а не только в области 
+// видимости данной функции.
+// То есть для каждой формы должен существовать свой именованный экземпляр.
+
+// Вот тут совсем непонятно было ) Зачем ? Как проверить что эта цель достигнута и ошибка исправлена ?
+// Жаль что нет связи, пришлось спрашивать преподов
+// Если я вызываю функцию которая определена на глобальном уровне - у меня же создаются глобальные 
+// экземпляры ? Правда я все равно не очень понимаю как я смогу к ним обращаться 
+//на глобальном уровне и отличать один от другого
+const setFormValidator = (form) => {
+  const formValidator = new FormValidator(configs, form);
+  formValidator.enableValidation();
+}
+
 forms.forEach((form) => {
-  const validator = new FormValidator(configs, form);
-  validator.enableValidation();
+//  const validator = new FormValidator();
+  setFormValidator(form)
+ // validator.enableValidation();
 });
