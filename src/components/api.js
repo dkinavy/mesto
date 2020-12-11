@@ -17,17 +17,17 @@ export class Api {
   getInitialCards() {
     return fetch(this._baseUrl + "/cards", {
       headers: this._headers,
-    }).then((res) => {
-      _getResponseData(res)
-    });
+    }).then(
+      this._getResponseData
+    );
   }
 
   getUserInfo() {
     return fetch(this._baseUrl + "/users/me", {
       headers: this._headers,
-    }).then((res) => {
-      _getResponseData(res)
-    });
+    }).then(
+      this._getResponseData
+    );
   }
   // другие методы работы с API
   setUserInfo(info) {
@@ -39,9 +39,9 @@ export class Api {
         name: info.name,
         about: info.job,
       }),
-    }).then((res) => {
-      _getResponseData(res)
-    });
+    }).then( 
+      this._getResponseData
+    );
     
   }
   setUserAvatar(avatar) {
@@ -51,9 +51,9 @@ export class Api {
       body: JSON.stringify({
         avatar: avatar.link
       }),
-    }).then((res) => {
-      _getResponseData(res)
-    });
+    }).then(
+      this._getResponseData
+    );
   }
 
 
@@ -65,33 +65,33 @@ export class Api {
         name: data.place,
         link: data.link,
       }),
-    }).then((res) => {
-      _getResponseData(res)
-    });
+    }).then(
+      this._getResponseData
+    );
   }
   deleteCard(data) {
     return fetch(this._baseUrl + "/cards/" + data._id, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => {
-      _getResponseData(res)
-    });
+    }).then(
+      this._getResponseData
+    );
   }
   deleteLike(data) {
     return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => {
-      _getResponseData(res)
-    });
+    }).then(
+      this._getResponseData
+    );
   }
 
   putLike(data) {
     return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
       method: "PUT",
       headers: this._headers,
-    }).then((res) => {
-      _getResponseData(res)
-    });
+    }).then(
+      this._getResponseData
+    );
   }
 }
