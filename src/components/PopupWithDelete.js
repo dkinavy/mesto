@@ -10,7 +10,7 @@ export class PopupWithDelete extends Popup {
     this._listener = (evt) => {
       evt.preventDefault();
       this._submitForm(this._data);
-      this.close();
+     // this.close();
     };
   }
 

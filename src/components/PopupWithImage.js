@@ -21,6 +21,7 @@ export class PopupWithImage extends Popup {
     // В методе open нужно вставлять в попап картинку и атрибут src изображения и подпись к картинке.
 
     this._popupElement.querySelector(".image-popup").src = image.link;
+    this._popupElement.querySelector(".image-popup").alt = image.place;
     this._popupElement.querySelector(".popup__image-title").textContent =
       image.place;
     super.open();

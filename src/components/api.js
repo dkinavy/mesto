@@ -6,15 +6,19 @@ export class Api {
     this._headers = options.headers;
   }
 
+
+  _getResponseData(res) {
+    if (!res.ok) {
+        return Promise.reject(`Ошибка: ${res.status}`);
+    }
+    return res.json();
+} 
+
   getInitialCards() {
     return fetch(this._baseUrl + "/cards", {
       headers: this._headers,
     }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
+      _getResponseData(res)
     });
   }
 
@@ -22,11 +26,7 @@ export class Api {
     return fetch(this._baseUrl + "/users/me", {
       headers: this._headers,
     }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
+      _getResponseData(res)
     });
   }
   // другие методы работы с API
@@ -39,7 +39,10 @@ export class Api {
         name: info.name,
         about: info.job,
       }),
+    }).then((res) => {
+      _getResponseData(res)
     });
+    
   }
   setUserAvatar(avatar) {
     return fetch(this._baseUrl + "/users/me/avatar", {
@@ -48,6 +51,8 @@ export class Api {
       body: JSON.stringify({
         avatar: avatar.link
       }),
+    }).then((res) => {
+      _getResponseData(res)
     });
   }
 
@@ -60,18 +65,24 @@ export class Api {
         name: data.place,
         link: data.link,
       }),
+    }).then((res) => {
+      _getResponseData(res)
     });
   }
   deleteCard(data) {
     return fetch(this._baseUrl + "/cards/" + data._id, {
       method: "DELETE",
       headers: this._headers,
+    }).then((res) => {
+      _getResponseData(res)
     });
   }
   deleteLike(data) {
     return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
       method: "DELETE",
       headers: this._headers,
+    }).then((res) => {
+      _getResponseData(res)
     });
   }
 
@@ -79,6 +90,8 @@ export class Api {
     return fetch(`${this._baseUrl}/cards/likes/${data._id}`, {
       method: "PUT",
       headers: this._headers,
+    }).then((res) => {
+      _getResponseData(res)
     });
   }
 }

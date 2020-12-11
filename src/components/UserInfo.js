@@ -30,6 +30,6 @@ export class UserInfo {
     console.log(info);
     this._name.textContent = info.name;
     this._job.textContent = info.about;
-    this._avatar.src = info.avatar;
+    this.setUserAvatar(info)
   }
 }
